@@ -1,0 +1,23 @@
+{
+  "name": "playwright_academy_fall_2026",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fifkapetr/playwright_academy_fall_2026.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/fifkapetr/playwright_academy_fall_2026/issues"
+  },
+  "homepage": "https://github.com/fifkapetr/playwright_academy_fall_2026#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5"
+  }
+}
