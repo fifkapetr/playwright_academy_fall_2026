@@ -8,5 +8,3 @@ test("First Test", async ({ page }) => {
   await page.locator("#password").fill("Playwright321!");
   await page.locator('[type="submit"]').click();
 });
-
-// Commit + push + PR (nemergovat) (20:23)
