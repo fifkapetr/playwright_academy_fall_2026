@@ -1,12 +1,11 @@
-// tests/learning/first.spec.ts
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../pages/LoginPage";
 
-import { test } from "@playwright/test";
+test("Login with valid credentials", async ({ page }) => {
+  const loginPage = new LoginPage(page);
 
-test("First Test", async ({ page }) => {
-  await page.goto("https://tredgate.com/pmtool/");
-  await page.locator("#username").fill("pw_academy");
-  await page.locator("#password").fill("Playwright321!");
-  await page.locator('[type="submit"]').click();
+  await loginPage.goto();
+  await loginPage.login("pw_academy", "Playwright321!");
+
+  await expect(page).not.toHaveURL(/pmtool\/$/);
 });
-
-// Commit + push + PR (nemergovat) (20:23)
