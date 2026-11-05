@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { LoginPage } from "./login_page.ts";
 
 export class DashboardPage {
   private readonly page: Page;
@@ -16,14 +17,17 @@ export class DashboardPage {
   async clickProfile() {
     await expect(this.notificationButton).toBeVisible();
     await this.profileButton.click();
+    return this;
   }
 
   async clickLogout() {
     await this.logoutButton.click();
+    return new LoginPage(this.page);
   }
 
   async logout() {
     await this.clickProfile();
     await this.clickLogout();
+    return new LoginPage(this.page);
   }
 }
