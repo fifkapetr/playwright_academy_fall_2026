@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { expect, Locator, Page, test } from "@playwright/test";
 import { LoginPage } from "./login_page.ts";
 import { ProjectsPage } from "./projects_page.ts";
 
@@ -29,8 +29,11 @@ export class DashboardPage {
   }
 
   async logout() {
-    await this.clickProfile();
-    await this.clickLogout();
+    await test.step("Logout", async () => {
+      await this.clickProfile();
+      await this.clickLogout();
+    });
+
     return new LoginPage(this.page);
   }
 
