@@ -21,42 +21,65 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: [["html"], ["list"]],
+  timeout: 60_000, // ? Timeout na maximální dobu běhu 1 testu v ms. Pokud test trvá více než 60 sec., Playwright ho ukončí jako neúspěšných
+  globalTimeout: 1 * 60 * 60 * 1000, // ? Timeout na dobu běhu všech testů. Zápis je udělaný pomocí násobků časových jednotek pro lepši čitelnost (h * m * s * ms)
+  expect: {
+    timeout: 7_000, // ? Maximální doba čekání v assertu v ms.
+  },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    actionTimeout: 7_000, // ? Nastavení maximální doby akcí (například click nebo fill) v ms.
+    navigationTimeout: 30_000, // ? Maximální doba trvání metody page.goto() v ms.
+    screenshot: "only-on-failure",
+    video: "off",
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
+    // ignoreHTTPSErrors: true, // ? Vypne kontroly na HTTPS chyby (certifikáty) v prohlížečích
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+      },
+    },
+    {
+      name: "chromium:low-res",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: {
+          width: 800,
+          height: 600,
+        },
+      },
     },
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] },
+    // },
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
 
     /* Test against mobile viewports. */
     // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
+    //   name: "Mobile Chrome",
+    //   use: { ...devices["Pixel 5"] },
     // },
     // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
+    //   name: "Mobile Safari",
+    //   use: { ...devices["iPhone 12"] },
     // },
 
     /* Test against branded browsers. */
