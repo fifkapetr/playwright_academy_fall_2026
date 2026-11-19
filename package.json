@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "ui": "playwright test --ui",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "tag:mujTag": "playwright test --grep=mujTag"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fifkapetr/playwright_academy_fall_2026.git"
