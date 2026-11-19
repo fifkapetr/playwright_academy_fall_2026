@@ -1,6 +1,6 @@
 // src/pages/pmtool/login_page.ts
 
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page, test } from "@playwright/test";
 import { DashboardPage } from "./dashboard_page.ts";
 import { LostPasswordPage } from "./lost_password_page.ts";
 
@@ -11,6 +11,7 @@ export class LoginPage {
   private readonly passwordInput: Locator;
   private readonly loginButton: Locator;
   private readonly passwordForgottenButton: Locator;
+  private readonly pageHeader: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -18,6 +19,7 @@ export class LoginPage {
     this.passwordInput = page.locator("#password");
     this.loginButton = page.locator('[type="submit"]');
     this.passwordForgottenButton = page.locator("#forget_password");
+    this.pageHeader = page.locator("h3.form-title");
   }
 
   // Při vytváření metod doporučím přístup začít s atomickými (malými) metodami s jedním krokem a pak vytvářet sdružující metody
@@ -46,14 +48,28 @@ export class LoginPage {
   }
 
   async login(username: string, password: string) {
-    await this.fillUsername(username);
-    await this.fillPassword(password);
-    await this.clickLogin();
+    await test.step("Login to Pmtool", async () => {
+      await this.fillUsername(username);
+      await this.fillPassword(password);
+      await this.clickLogin();
+    });
+
     return new DashboardPage(this.page);
   }
 
   async clickPasswordForgotten() {
     await this.passwordForgottenButton.click();
     return new LostPasswordPage(this.page);
+  }
+
+  async assertLoginHeader(headerText: string) {
+    await test.step("Assert Login Header", async () => {
+      await expect(this.pageHeader, "Page Header is Visible").toBeVisible();
+      await expect(this.pageHeader, "Page Header has Text").toHaveText(
+        headerText,
+      );
+    });
+
+    return this;
   }
 }
